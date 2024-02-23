@@ -31,6 +31,8 @@
 const char* ssid     =      "SSID";
 const char* password =      "PASSWORD";
 
+unsigned long previousMillis = 0;
+
 void setup() {
   /* Serial port for debugging purposes */
   Serial.begin(SERIAL_PORT_SPEER);
@@ -38,6 +40,9 @@ void setup() {
   Serial.print("SW Version: ");
   Serial.println(SW_VERSION);
   
+  pinMode(33, OUTPUT);
+  digitalWrite(33, LOW);
+
   /* read cfg from EEPROM */
   WifiMacAddr = WiFi.macAddress();
   Cfg_Init();
@@ -89,15 +94,30 @@ void setup() {
 }
 
 void loop() {
-  Serial.println("----------------------------------------------------------------");
-  Camera_CapturePhoto();
-  Server_SendPhotoToPrusaBackend();
+  unsigned long currentMillis = millis();
+  
+  if (currentMillis - previousMillis >= (RefreshInterval * 1000) ) {
+    previousMillis = currentMillis;
+    
+    Serial.println("----------------------------------------------------------------");
+    Camera_CapturePhoto();
+    Server_SendPhotoToPrusaBackend();
+
+    unsigned long runMillis = millis() - currentMillis;
+
+    Serial.println("");
+    Serial.print("Operation time: ");
+    Serial.print(runMillis/1000);
+    Serial.print(".");
+    Serial.print((runMillis%1000)/100);
+    Serial.print((runMillis%100)/10);
+    Serial.print((runMillis%10));
+    Serial.println(" seconds");
+    Serial.println("");
+  }
 
   /* reset wdg */
-  for (uint32_t i = 0; i < RefreshInterval; i++) {
-    esp_task_wdt_reset();
-    delay(1000);
-  }
+  esp_task_wdt_reset();
 }
 
 /* EOF */

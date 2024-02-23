@@ -241,7 +241,7 @@ void Server_SendPhotoToPrusaBackend() {
       esp_task_wdt_reset();
       for (int index = 0; index < photo.length(); index = index + PHOTO_FRAGMENT_SIZE) {
         client.print(photo.substring(index, index + PHOTO_FRAGMENT_SIZE));
-        Serial.println(index);
+        //Serial.println(index);
       }
       Serial.println("Send done!");
       esp_task_wdt_reset();
@@ -265,6 +265,15 @@ void Server_SendPhotoToPrusaBackend() {
       Serial.print(BackendReceivedData.length());
       Serial.print("]: ");
       Serial.println(BackendReceivedData);
+
+      if( 0 == BackendReceivedData.length() )
+      {
+        digitalWrite(33, LOW);
+      }
+      else
+      {
+        digitalWrite(33, HIGH);
+      }
 
       client.stop();
     }

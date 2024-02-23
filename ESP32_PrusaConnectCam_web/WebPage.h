@@ -288,9 +288,6 @@ const char index_html[] PROGMEM = R"rawliteral(
   </form>
     </div>
     
-    <br><hr><h3>Picture</h3>
-  <div><br><center><img src="saved-photo" id="photo" width="70%"></center></div>
-
    <hr>
    Project: ESP32 PrusaConnect Camera, Author: Miroslav Pivovarsky, e-mail: miroslav.pivovarsky@gmail.com
 </body>

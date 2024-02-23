@@ -37,7 +37,7 @@ void Cfg_ReadCfg() {
 void Cfg_DefaultCfg() {
   Serial.println("Set default configuration!");
 
-  Cfg_SaveRefreshInterval(10);
+  Cfg_SaveRefreshInterval(30);
   Cfg_SaveToken("");
   Cfg_GetFingerprint();
   Cfg_SavePhotoQuality(20);
